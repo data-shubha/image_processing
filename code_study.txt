@@ -1,0 +1,16 @@
+User-Defined Functions in the code:
+
+1. getImageList
+2. findNextRight
+3. findNextDown
+4. maxFinder
+5. verticalCrackCheck
+6. horizontalCrackCheck
+7. getVideoFrames
+8. getAdjacent
+9. emptyImageCopy
+10. processImage
+11. cracksInImage
+12. markingsInImage
+13. noiseRemoval
+14. readFramesFromImage
