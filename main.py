@@ -12,7 +12,7 @@ from skimage.color import rgb2gray
 import matplotlib as plt
 import cv2
 from PIL import ImageFile
-ImageFile.LOAD_TRUNCATED_IMAGES = True
+ImageFile.LOAD_TRUNCATED_IMAGES = True #
 
 #Folder where annotated images go
 annotatedFilename = "Annotated Cracks"
