@@ -19,7 +19,7 @@ annotated_file_name = "Annotated Cracks"
 # Folder where image highlighting road markings are saved
 road_marking_folder = "Road Markings"
 # Location of the video processed
-video_file_name = "D:\\2022 Summer Startup Work\\Pavment Distress One File\\Video\\testVid.mov"
+video_file_name = "D:\\2022 Summer Startup Work\\Pavement Distress One File\\Video\\testVid.mov"
 # Location of images processed
 test_image_folder_name = "Test Images"
 # Where grey scaled and closed images are saved
@@ -41,13 +41,13 @@ def get_image_list():
 imagesToAverage = get_image_list()
 
 
-def find_next_right(image, pixel, maxI, maxJ):
-    """Find the next black pixel to the right of PIXEL in IMAGE with height MAXI and length MAXJ"""
-    if pixel[1] >= maxJ - 1:
+def find_nxt_right(image, pixel, max_i, max_j):
+    """Find the nxt black pixel to the right of PIXEL in IMAGE with height max_i and length max_j"""
+    if pixel[1] >= max_j - 1:
         return "End image"
     elif image[pixel[0]][pixel[1] + 1] == 0:
         return [pixel[0], pixel[1] + 1]
-    elif pixel[0] == 0 or pixel[0] >= maxI - 1:
+    elif pixel[0] == 0 or pixel[0] >= max_i - 1:
         return "End image"
     elif image[pixel[0] - 1][pixel[1] + 1] == 0:
         return [pixel[0] - 1, pixel[1] + 1]
@@ -59,13 +59,13 @@ def find_next_right(image, pixel, maxI, maxJ):
         return "End of crack"
 
 
-def findNextDown(image, pixel, maxI, maxJ):
-    """Find the next black pixel below PIXEL in IMAGE with height MAXI and length MAXJ"""
-    if pixel[0] >= maxI - 1:
+def find_nxt_down(image, pixel, max_i, max_j):
+    """Find the nxt black pixel below PIXEL in IMAGE with height max_i and length max_j"""
+    if pixel[0] >= max_i - 1:
         return "End image"
     elif image[pixel[0] + 1][pixel[1]] == 0:
         return [pixel[0] + 1, pixel[1]]
-    elif pixel[1] >= maxJ - 1 or pixel[1] == 0:
+    elif pixel[1] >= max_j - 1 or pixel[1] == 0:
         return "End image"
     elif image[pixel[0] + 1][pixel[1] + 1] == 0:
         return [pixel[0] + 1, pixel[1] + 1]
@@ -77,45 +77,45 @@ def findNextDown(image, pixel, maxI, maxJ):
         return "End of crack"
 
 
-def maxFinder(image, jumpSize, output, function, name="crack"):
+def max_finder(image, jump_size, output, function, name="crack"):
     """Find the longest output of FUNCTION checking every JUMP SIZE pixel in IMAGE, saving with name NAME if OUTPUT"""
-    maxI = len(image)
-    maxJ = len(image[0])
-    maxLen = 0
-    maxList = []
-    for i in range(0, maxI, jumpSize):
-        for j in range(0, maxJ, jumpSize):
+    max_i = len(image)
+    max_j = len(image[0])
+    max_len = 0
+    max_list = []
+    for i in range(0, max_i, jump_size):
+        for j in range(0, max_j, jump_size):
             print([i, j])
-            if [i, j] in maxList:
+            if [i, j] in max_list:
                 continue
             else:
-                if image[i][j] == 1 and [i, j] not in maxList:
+                if image[i][j] == 1 and [i, j] not in max_list:
                     pixel = [i, j]
                     traversed = [[i, j]]
                     count = 0
-                    next = function(image, pixel, maxI, maxJ)
-                    while type(next) != str:
+                    nxt = function(image, pixel, max_i, max_j)
+                    while type(nxt) != str:
                         count += 1
-                        traversed.append(next)
-                        next = function(image, next, maxI, maxJ)
-                    if count > maxLen:
-                        maxLen = count
-                        maxList = traversed
+                        traversed.append(nxt)
+                        nxt = function(image, nxt, max_i, max_j)
+                    if count > max_len:
+                        max_len = count
+                        max_list = traversed
     if output:
         annotated_image = []
-        for i in range(maxI):
-            for j in range(maxJ):
+        for i in range(max_i):
+            for j in range(max_j):
                 if image[i][j] == 0:
                     annotated_image.append([0, 0, 0])
                 else:
                     annotated_image.append([255, 255, 255])
-        annotated_image = np.reshape(annotated_image, (maxI, maxJ, 3))
-        print(len(annotated_image), len(annotated_image[0]), maxList)
-        for pixel in maxList:
+        annotated_image = np.reshape(annotated_image, (max_i, max_j, 3))
+        print(len(annotated_image), len(annotated_image[0]), max_list)
+        for pixel in max_list:
             annotated_image[pixel[0]][pixel[1]] = [255, 0, 0]
         io.imsave(annotated_file_name + "\\" + name + '.jpg', annotated_image)
         # print(annotatedImage)
-    return maxLen
+    return max_len
 
 
 def vertical_crack_check(image, trim_parameters=[0, 0], threshold=0.5, save=False, name="crack"):
@@ -126,8 +126,8 @@ def vertical_crack_check(image, trim_parameters=[0, 0], threshold=0.5, save=Fals
     trimmed = image[:]
     trimmed = trimmed[:, trim_parameters[1]:len(trimmed[0]) - trim_parameters[1]]
     trimmed = trimmed[trim_parameters[0]:len(trimmed) - trim_parameters[0]]
-    maxI = len(trimmed)
-    maxJ = len(trimmed[0])
+    max_i = len(trimmed)
+    max_j = len(trimmed[0])
 
     print(len(image), len(image[0]), len(trimmed))
     for i in range(len(trimmed[0])):
@@ -137,15 +137,15 @@ def vertical_crack_check(image, trim_parameters=[0, 0], threshold=0.5, save=Fals
     print(cracks)
     if save:
         annotated_image = []
-        for i in range(maxI):
-            for j in range(maxJ):
+        for i in range(max_i):
+            for j in range(max_j):
                 if trimmed[i][j] == 0:
                     annotated_image.append([0, 0, 0])
                 else:
                     annotated_image.append([255, 255, 255])
-        annotated_image = np.reshape(annotated_image, (maxI, maxJ, 3))
-        for i in range(maxI):
-            for j in range(maxJ):
+        annotated_image = np.reshape(annotated_image, (max_i, max_j, 3))
+        for i in range(max_i):
+            for j in range(max_j):
                 if j in cracks:
                     annotated_image[i][j] = [255, 0, 0]
         io.imsave(annotated_file_name + "\\" + name + ".jpg", annotated_image)
@@ -160,8 +160,8 @@ def horizontal_crack_check(image, trim_parameters=[0, 0], threshold=0.5, save=Fa
     trimmed = image[:]
     trimmed = trimmed[:, trim_parameters[1]:len(trimmed[0]) - trim_parameters[1]]
     trimmed = trimmed[trim_parameters[0]:len(trimmed) - trim_parameters[0]]
-    maxI = len(trimmed)
-    maxJ = len(trimmed[0])
+    max_i = len(trimmed)
+    max_j = len(trimmed[0])
 
     print(len(image), len(image[0]), len(trimmed))
     for i in range(len(trimmed)):
@@ -171,15 +171,15 @@ def horizontal_crack_check(image, trim_parameters=[0, 0], threshold=0.5, save=Fa
     print(cracks)
     if save:
         annotated_image = []
-        for i in range(maxI):
-            for j in range(maxJ):
+        for i in range(max_i):
+            for j in range(max_j):
                 if trimmed[i][j] == 0:
                     annotated_image.append([0, 0, 0])
                 else:
                     annotated_image.append([255, 255, 255])
-        annotated_image = np.reshape(annotated_image, (maxI, maxJ, 3))
-        for i in range(maxI):
-            for j in range(maxJ):
+        annotated_image = np.reshape(annotated_image, (max_i, max_j, 3))
+        for i in range(max_i):
+            for j in range(max_j):
                 if i in cracks:
                     annotated_image[i][j] = [0, 255, 0]
         io.imsave(annotated_file_name + "\\" + name + ".jpg", annotated_image)
@@ -194,8 +194,8 @@ def get_video_frames(folder_name):
     return img_list
 
 
-def get_adjacent(i, j, maxI, maxJ):
-    """Get all pixels adjacent to the pixel at I, J in an image of size MAXI by MAXJ"""
+def get_adjacent(i, j, max_i, max_j):
+    """Get all pixels adjacent to the pixel at I, J in an image of size max_i by max_j"""
     top_left = [i - 1, j - 1]
     left = [i, j - 1]
     bottom_left = [i + 1, j - 1]
@@ -209,10 +209,10 @@ def get_adjacent(i, j, maxI, maxJ):
         for j in range(len(i)):
             if i[j] < 0:
                 i[j] = 0
-            if j == 0 and i[j] >= maxI:
-                i[j] = maxI - 1
-            if j == 1 and i[j] >= maxJ:
-                i[j] = maxJ - 1
+            if j == 0 and i[j] >= max_i:
+                i[j] = max_i - 1
+            if j == 1 and i[j] >= max_j:
+                i[j] = max_j - 1
 
     return adjacent
 
@@ -321,7 +321,7 @@ def read_frames_from_image(image_path, folder_name, num_frames=-1):
 
     # Release all space and windows once done
     cam.release()
-    cv2.destroyAllWindows()
+    cv2.destroyAllWindows()  # reference not found
 
 
 def __main__():
@@ -343,5 +343,5 @@ def __main__():
     print("--- %s seconds ---" % (time.time() - start_time))
 
 
-if (__name__ == '__main__'):
+if __name__ == '__main__':
     __main__()
