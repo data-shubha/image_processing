@@ -1,14 +1,14 @@
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import time
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import os
 from skimage import io
-from skimage.filters.rank import entropy
-from skimage.morphology import disk
+# from skimage.filters.rank import entropy
+# from skimage.morphology import disk
 from skimage.morphology import closing
 from skimage.color import rgb2gray
-import matplotlib as plt
+# import matplotlib as plt
 import cv2
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -22,7 +22,7 @@ roadMarkingFolder = "Road Markings"
 videoFilename = "D:\\2022 Summer Startup Work\\Pavment Distress One File\\Video\\testVid.mov"
 # Location of images processed
 testImageFolderName = "Test Images"
-# Where greyscaled and closed images are saved
+# Where grey scaled and closed images are saved
 saveImageFolderName = "Processed Images"
 # Where black/white images are saved
 finalImageFolderName = "Cracks"
