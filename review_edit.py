@@ -287,8 +287,9 @@ def read_frames_from_image(image_path, folder_name, num_frames=-1):
     try:
 
         # creating a folder named data
-        if not os.path.exists(folder_name):
-            os.makedirs(num_frames)
+        if not os.path.exists("data"):
+            os.makedirs("data")
+        os.makedirs("data/{}".format(num_frames))
 
     # if not created then raise error
     except OSError:
